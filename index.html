@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giáo Án Tích Hợp Tương Tác 4 Kỹ Năng - Bài 7: Gia Đình & Thú Cưng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            deep: '#0F4C5C',   /* Xanh đại dương sẫm */
+                            teal: '#1A818C',   /* Xanh ngọc lục bảo */
+                            coral: '#E36414',  /* Cam san hô ấm */
+                            sand: '#FBF8F3',   /* Màu cát sữa nhạt */
+                            accent: '#FB8B24', /* Cam rực rỡ */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Tùy biến thanh cuộn mượt mà */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1A818C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0F4C5C;
+        }
+        /* Hiệu ứng nổi bật cho dòng khi hover */
+        .hover-row:hover {
+            background-color: rgba(26, 129, 140, 0.03);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-brand-sand text-slate-800 font-sans min-height-screen">
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+    
+    <!-- Header Công nghệ & Sư phạm cao cấp -->
+    <header class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-slate-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-teal/10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-brand-coral/10 rounded-full -ml-12 -mb-12"></div>
+        
+        <div class="relative z-10">
+            <span class="bg-brand-coral/10 text-brand-coral font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full">
+                <i class="fa-solid fa-fire mr-1.5 animate-bounce"></i> Phương pháp tương tác Gamification
+            </span>
+            <h1 class="font-serif text-4xl lg:text-5xl text-brand-deep font-bold mt-4 mb-3">
+                GIÁO ÁN CHI TIẾT <span>BÀI 7: 家人和宠物</span>
+            </h1>
+            <p class="text-slate-600 text-lg max-w-3xl leading-relaxed">
+                Khung chương trình tích hợp <strong>4 kỹ năng thực tế (Nghe - Nói - Đọc - Viết)</strong>, tăng độ kích thích lớp học thông qua các trò chơi phản xạ nhanh và nền tảng kỹ thuật số (Blooket). Thiết kế thông minh cho phép giáo viên theo dõi tiến trình trực quan.
+            </p>
+            
+            <div class="flex flex-wrap gap-3 mt-6">
+                <div class="bg-brand-deep text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-map"></i> Lộ trình: 3 Buổi học (90 Phút/buổi)
+                </div>
+                <button onclick="window.print()" class="bg-brand-teal hover:bg-brand-deep text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition duration-300">
+                    <i class="fa-solid fa-print"></i> In/Xuất PDF Giáo án
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Thanh lọc buổi học nhanh (Interactive Tabs) -->
+    <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div class="flex bg-white p-1.5 rounded-2xl shadow-md border border-slate-100 gap-1">
+            <button onclick="filterSession('all')" id="btn-all" class="session-tab px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 bg-brand-teal text-white">
+                Tất Cả Buổi Học
+            </button>
+            <button onclick="filterSession('buoi1')" id="btn-buoi1" class="session-tab px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-all duration-300">
+                Buổi 1: Từ vựng & Ngữ pháp
+            </button>
+            <button onclick="filterSession('buoi2')" id="btn-buoi2" class="session-tab px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-all duration-300">
+                Buổi 2: Nghe - Đọc Hiểu sâu
+            </button>
+            <button onclick="filterSession('buoi3')" id="btn-buoi3" class="session-tab px-4 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-all duration-300">
+                Buổi 3: Luyện Nói & Viết Hán Tự
+            </button>
+        </div>
+        
+        <div class="text-xs bg-brand-teal/10 text-brand-teal px-3 py-1.5 rounded-xl border border-brand-teal/20 font-medium">
+            <i class="fa-solid fa-circle-check mr-1.5"></i> Nhấp chọn ô vuông để đánh dấu hoạt động đã hoàn thành!
+        </div>
+    </div>
+
+    <!-- BUỔI 1: TỪ VỰNG CỐT LÕI & NGỮ PHÁP NỀN TẢNG -->
+    <section id="session-buoi1" class="session-section bg-white rounded-2xl shadow-xl border border-slate-100 mb-8 overflow-hidden transition-all duration-300">
+        <!-- Header Buổi -->
+        <div class="bg-gradient-to-r from-brand-deep to-brand-teal text-white px-6 py-5 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">01</span>
+                <div>
+                    <h2 class="font-serif text-xl font-bold">BUỔI 1: TỪ VỰNG CỐT LÕI & NGỮ PHÁP NỀN TẢNG</h2>
+                    <p class="text-xs text-brand-sand/80">Khởi tạo phản xạ từ vựng - Trực quan hoá cấu trúc cơ bản</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-white/15 px-3 py-1.5 rounded-xl text-sm font-semibold">
+                <i class="fa-regular fa-clock"></i> 90 Phút
+            </div>
+        </div>
+
+        <!-- Bảng Tiến Trình Buổi 1 -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                        <th class="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider w-[8%]">Trạng thái</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[12%]">Thời lượng</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[25%]">Hoạt động chính / Tài nguyên</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[40%]">Các bước thực hiện của Giáo viên & Học liệu liên kết</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[15%]">Kỹ năng rèn luyện</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                15 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Ấn tượng Đầu giờ: Khởi động</div>
+                            <div class="text-xs text-slate-500 mt-1">Đánh thức năng lượng & Ôn cũ</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Hoạt động "Bản đồ Châu lục bí ẩn":</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Bước 1:</strong> Giáo viên trình chiếu hoặc chỉ tay nhanh vào một bản đồ câm. Ôn tập nhanh các quốc gia và châu lục dựa theo lộ trình buổi học.</li>
+                                <li><strong>Bước 2:</strong> Hỏi đáp nhanh: "你是哪国人？" (Bạn là người nước nào?), "你去过哪个大洲？" (Bạn đã từng đi châu lục nào?) để thiết lập dòng phản xạ tự nhiên.</li>
+                            </ul>
+                            <div class="bg-brand-sand p-2.5 rounded-xl border border-slate-100 text-xs text-brand-deep mt-2">
+                                <i class="fa-solid fa-circle-info mr-1"></i> <strong>Lưu ý của GV:</strong> Tập trung vào sửa âm điệu chuẩn cho các quốc gia lớn châu Á, châu Âu học sinh thường nói nhầm.
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nói (Oral)</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Phản xạ</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                25 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Tiếp nhận Từ vựng</div>
+                            <div class="text-xs text-slate-500 mt-1">Nạp âm thanh & mặt chữ hán</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Quy trình nạp từ vựng 3 chiều (Âm - Nghĩa - Chữ):</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Bước 1:</strong> Giới thiệu nhóm thú nuôi từ bảng học liệu (gồm 狗 gǒu, 猫 māo, 兔子 tùzi, 鸟 niǎo, 马 mǎ...) kết hợp hành động mô tả tiếng kêu hoặc dáng đi (TPR).</li>
+                                <li><strong>Bước 2:</strong> Kết nối với nhóm tính từ, phó từ và đại từ mô tả cốt lõi (như 忙 máng, 很 hěn, 高兴 gāoxìng, 可爱 kě'ài, 好看 hǎokàn, 我们 wǒmen, 每天 měitiān).</li>
+                                <li><strong>Bước 3:</strong> GV phân tích từ "宠物" (chǒngwù), hướng dẫn cách ghép đại từ nhân xưng với hậu tố "们" (men) để tạo số nhiều từ bảng từ vựng chính.</li>
+                                <li><strong>Bước 4 (Luyện viết nhanh):</strong> Cho học sinh viết nháp nhanh các chữ Hán có bộ thủ dễ nhớ (như bộ Khuyển 犭 trong 狗, 猫; bộ Mã 马 trong 马 và bộ Nhân đứng 亻 trong 们, 你).</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Đọc (Read)</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Viết (Write)</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                20 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Điểm nhấn Ngữ pháp</div>
+                            <div class="text-xs text-slate-500 mt-1">Mô phỏng quy tắc toán học</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Phân tích công thức câu:</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Công thức 1 (Sở hữu):</strong> <span class="text-brand-coral font-bold">A 的 B</span>. GV nhấn mạnh trường hợp được lược bỏ "的" (quan hệ thân thiết, ví dụ: 我爸爸, 我朋友).</li>
+                                <li><strong>Công thức 2 (Phủ định):</strong> <span class="text-brand-coral font-bold">不 /bù/ + Tính từ/Động từ</span>. Giáo viên nhấn mạnh Quy tắc biến âm cực kỳ quan trọng: "不" đứng trước thanh 4 đổi giọng thành thanh 2 (bú shì - 不是).</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Ngữ pháp</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="bg-brand-coral/5 hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral text-white font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                20 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-brand-coral text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-gamepad animate-pulse"></i> Trò chơi củng cố
+                            </div>
+                            <div class="text-xs text-slate-600 font-semibold mt-1">"Thú Cưng Đi Lạc" (宠物迷路了)</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Cách vận hành trò chơi trực tiếp trên lớp:</p>
+                            <div class="text-xs text-slate-600 space-y-1 bg-white p-3 rounded-xl border border-brand-coral/20">
+                                <strong>Cách chơi:</strong> Giáo viên chia lớp thành 3-4 nhóm nhỏ. Mỗi nhóm được phát một thẻ động vật bí mật.
+                                <br>Đại diện nhóm đứng lên mô tả bằng 3 câu mang cấu trúc ngữ pháp vừa học để các nhóm khác đoán:
+                                <ul class="list-disc pl-4 mt-1 text-slate-500">
+                                    <li>Câu 1 (Sở hữu): "这是 [Tên nhân vật] 的宠物。"</li>
+                                    <li>Câu 2 (Trạng thái mô tả có dùng '很'): "它的猫/狗很可爱，很好看..."</li>
+                                    <li>Câu 3 (Phủ định): "它不忙 (它不忙)。"</li>
+                                </ul>
+                                <span class="text-brand-coral font-semibold">Nhóm đoán nhanh nhất và phát âm đúng luật biến điệu của "不" sẽ ghi điểm!</span>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nói (Speak)</span>
+                                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Phản xạ nhanh</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="bg-brand-teal/5 hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-teal text-white font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                10 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-brand-teal text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-laptop-code"></i> Công nghệ EdTech
+                            </div>
+                            <div class="text-xs text-slate-600 font-semibold mt-1">Đấu trường Blooket</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Kiểm tra nhanh qua nền tảng:</p>
+                            <p class="text-xs">
+                                Giáo viên mở chế độ <strong>"Crypto Hack"</strong> hoặc <strong>"Gold Quest"</strong> trên <strong>Blooket</strong> với gói câu hỏi khớp chính xác từ vựng và bảng từ vựng mới.
+                            </p>
+                            <div class="bg-white px-3 py-2 rounded-lg border border-slate-200 text-xs">
+                                <span class="font-bold text-brand-coral"><i class="fa-solid fa-circle-play"></i> Link tham khảo:</span> blooket.com/play (Giáo viên chuẩn bị trước mã PIN nhập phòng trực tiếp).
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Công nghệ</span>
+                                <span class="bg-pink-100 text-pink-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Từ vựng</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- BUỔI 2: ĐỌC HIỂU SÂU & THỰC HÀNH NGHE HIỂU TRỰC QUAN -->
+    <section id="session-buoi2" class="session-section bg-white rounded-2xl shadow-xl border border-slate-100 mb-8 overflow-hidden transition-all duration-300">
+        <!-- Header Buổi -->
+        <div class="bg-gradient-to-r from-[#1A3C40] to-brand-teal text-white px-6 py-5 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">02</span>
+                <div>
+                    <h2 class="font-serif text-xl font-bold">BUỔI 2: ĐỌC HIỂU SÂU & THỰC HÀNH NGHE HIỂU TRỰC QUAN</h2>
+                    <p class="text-xs text-brand-sand/80">Khai thác bài khóa cốt lõi - Định hình tai nghe bản ngữ</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-white/15 px-3 py-1.5 rounded-xl text-sm font-semibold">
+                <i class="fa-regular fa-clock"></i> 90 Phút
+            </div>
+        </div>
+
+        <!-- Bảng Tiến Trình Buổi 2 -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                        <th class="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider w-[8%]">Trạng thái</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[12%]">Thời lượng</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[25%]">Hoạt động chính / Tài nguyên</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[40%]">Các bước thực hiện của Giáo viên & Học liệu liên kết</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[15%]">Kỹ năng rèn luyện</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                15 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Sửa bài cũ & Bộ lọc</div>
+                            <div class="text-xs text-slate-500 mt-1">Dọn sạch hiểu lầm bài trước</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Chi tiết hoạt động "Lưới lọc ngữ pháp":</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li>Kiểm tra tập viết chữ Hán của học sinh (đã giao từ Buổi 1 dựa trên sơ đồ học tập).</li>
+                                <li>Chỉ ra các lỗi viết sai nét thuận hoặc lỗi quên đổi thanh điệu cho chữ "不" bằng cách viết lên bảng các phương án sai để học sinh thi đua tìm lỗi và sửa lại.</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Viết (Write)</span>
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Phân tích</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                35 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Khai Thác Bài Khóa</div>
+                            <div class="text-xs text-slate-500 mt-1">Đi sâu vào bối cảnh văn hóa</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Hoạt động "Đóng vai Phóng viên nhí" (记者采访):</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Bước 1:</strong> Giáo viên bật audio mẫu bài khóa chủ đề Gia đình & Thú nuôi. Học sinh nhắm mắt tập trung lắng nghe để bắt ý chính.</li>
+                                <li><strong>Bước 2:</strong> Chia học sinh theo cặp để luân phiên đóng vai: Một người là phóng viên, người kia là nhân vật trong bài khóa để phỏng vấn các câu như: "你家有什么宠物？" (Nhà bạn có thú cưng gì?), "你的宠物好看吗？" (Thú cưng của bạn có đẹp không?).</li>
+                                <li><strong>Bước 3:</strong> Trả lời các câu hỏi đọc hiểu của giáo trình để chứng minh mức độ hiểu bài sâu.</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Đọc (Read)</span>
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nói (Speak)</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="bg-brand-coral/5 hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral text-white font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                25 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-brand-coral text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-gamepad animate-pulse"></i> Trò chơi Phản xạ
+                            </div>
+                            <div class="text-xs text-slate-600 font-semibold mt-1">"Nhanh tai Nhanh trí" (耳聪目明)</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Vận hành bài luyện nghe trực quan:</p>
+                            <div class="text-xs text-slate-600 space-y-2 bg-white p-3 rounded-xl border border-brand-coral/20">
+                                <p>Sử dụng phần bài nghe số 3 trong học liệu (gồm 6 ô tranh từ A đến F).</p>
+                                <strong>Cách chơi:</strong>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li>Mỗi học sinh/nhóm được chuẩn bị sẵn một bộ thẻ mini hoặc sử dụng bảng tương tác chính.</li>
+                                    <li>GV đọc nhanh câu mô tả có chứa trạng từ và tính từ (Ví dụ: "它的马跑得很快，它的马很高兴" hoặc "我的兔子不吃肉， it's very cute").</li>
+                                    <li>Học sinh phải lập tức chỉ vào bức tranh đúng trên bảng (Tranh F cho ngựa, tranh A cho thỏ...) và lặp lại từ vựng pinyin thật nhanh. Ai tích lũy nhiều lượt chỉ đúng nhanh nhất sẽ giành chiến thắng.</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nghe (Listen)</span>
+                                <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Phản xạ nhạy</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="bg-brand-teal/5 hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-teal text-white font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                15 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-brand-teal text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-gamepad animate-pulse"></i> Trò chơi Blooket củng cố
+                            </div>
+                            <div class="text-xs text-slate-600 font-semibold mt-1">Đấu trường Blooket: "Monster Brawl"</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Thi đua ôn luyện từ vựng và bài đọc:</p>
+                            <p class="text-xs">
+                                Giáo viên tạo phòng <strong>Blooket</strong> chế độ <strong>"Monster Brawl"</strong> hoặc <strong>"Tower Defense"</strong>. Câu hỏi tập trung vào việc ghép nghĩa câu phức (Ví dụ: "Māly de chǒngwù hěn kě'ài." nghĩa tiếng Việt là gì?).
+                            </p>
+                            <p class="text-xs text-slate-500 italic">
+                                Trò chơi giúp giải tỏa áp lực học thuật cuối buổi nhưng vẫn ghim sâu các kết cấu tính từ mô tả trong trí nhớ dài hạn của học sinh.
+                            </p>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Tổng hợp</span>
+                                <span class="bg-pink-100 text-pink-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Edtech</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- BUỔI 3: LUYỆN NÓI THUYẾT TRÌNH & SÁNG TẠO ĐOẠN VĂN VIẾT -->
+    <section id="session-buoi3" class="session-section bg-white rounded-2xl shadow-xl border border-slate-100 mb-8 overflow-hidden transition-all duration-300">
+        <!-- Header Buổi -->
+        <div class="bg-gradient-to-r from-brand-coral to-brand-accent text-white px-6 py-5 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">03</span>
+                <div>
+                    <h2 class="font-serif text-xl font-bold">BUỔI 3: LUYỆN NÓI THUYẾT TRÌNH & SÁNG TẠO ĐOẠN VĂN VIẾT</h2>
+                    <p class="text-xs text-brand-sand/80">Khai phóng kỹ năng Sản sinh (Productive) - Thiết lập bản lĩnh ngôn ngữ</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-white/15 px-3 py-1.5 rounded-xl text-sm font-semibold">
+                <i class="fa-regular fa-clock"></i> 90 Phút
+            </div>
+        </div>
+
+        <!-- Bảng Tiến Trình Buổi 3 -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-100">
+                        <th class="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider w-[8%]">Trạng thái</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[12%]">Thời lượng</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[25%]">Hoạt động chính / Tài nguyên</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[40%]">Các bước thực hiện của Giáo viên & Học liệu liên kết</th>
+                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-[15%]">Kỹ năng rèn luyện</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                20 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Hán tự Đỉnh phong</div>
+                            <div class="text-xs text-slate-500 mt-1">Đấu viết chuẩn nét bút thuận</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Trò chơi "Đấu sĩ nét chữ" (汉字练习):</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Bước 1:</strong> Dựa theo nội dung đánh giá của lộ trình, giáo viên chia bảng làm 2 hoặc 3 phần cho 2-3 đội lên thi đấu viết.</li>
+                                <li><strong>Bước 2:</strong> GV đọc Pinyin hoặc nghĩa tiếng Việt của từ cốt lõi. Đại diện các đội phải viết thật nhanh, đẹp, đúng quy tắc bút thuận chữ Hán tương ứng.</li>
+                                <li><strong>Đánh giá nhanh:</strong> GV sửa trực tiếp nét viết bị khuyết hoặc sai quy tắc của học sinh tại lớp để làm mẫu chuẩn hóa.</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Viết (Write)</span>
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Cổ điển</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                35 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Nói Thuyết Trình Cá Nhân</div>
+                            <div class="text-xs text-slate-500 mt-1">Độc thoại và thể hiện bản lĩnh</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Hoạt động "Show & Tell: Thú cưng & Tôi":</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li><strong>Bước 1:</strong> Học sinh chuẩn bị một ảnh chụp thú cưng thực tế của gia đình, hoặc tự vẽ tay một con vật từ danh sách.</li>
+                                <li><strong>Bước 2:</strong> Mỗi học sinh tự tin lên thuyết trình ngắn từ 4-6 câu: Giới thiệu tên, đặc điểm cơ thể (cao, mập, nhỏ...), tính cách (đáng yêu, bận rộn hay vui mừng hằng ngày), và có dùng cấu trúc phủ định "不".</li>
+                                <li><strong>Bước 3:</strong> GV chấm điểm theo barem: Phát âm chuẩn (40%), Lưu loát (30%), Đúng ngữ pháp "的" và biến điệu "不" (30%).</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Nói (Speak)</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Sáng tạo</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                25 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Sáng Tạo Đoạn Văn Viết</div>
+                            <div class="text-xs text-slate-500 mt-1">Hệ thống hóa toàn bộ kiến thức</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Hoạt động "Nhật ký Gia đình nhỏ":</p>
+                            <ul class="list-disc pl-4 space-y-1 text-xs">
+                                <li>Học sinh viết đoạn văn từ 30-50 chữ Hán giới thiệu tổng quan về các thành viên gia đình kết hợp miêu tả thú nuôi.</li>
+                                <li>Yêu cầu bắt buộc sử dụng đúng và ghi chú dưới từ ngữ có dùng trợ từ <span class="font-bold text-brand-coral">的</span> và trạng từ phủ định <span class="font-bold text-brand-coral">不</span> để kiểm tra độ nhận thức về ngữ pháp.</li>
+                                <li>GV thu vở chấm điểm chi tiết và đưa ra lời phê cụ thể.</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Viết (Write)</span>
+                                <span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Tư duy</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover-row">
+                        <td class="p-4 text-center">
+                            <input type="checkbox" class="w-5 h-5 rounded text-brand-teal focus:ring-brand-teal border-slate-300 cursor-pointer">
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-brand-coral/10 text-brand-coral font-bold px-2.5 py-1 rounded-lg text-sm block text-center">
+                                10 phút
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-slate-800 text-sm">Vinh danh & Tổng kết</div>
+                            <div class="text-xs text-slate-500 mt-1">Đánh giá chung lộ trình</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 space-y-2">
+                            <p class="font-semibold text-brand-deep">Tổng kết & Vinh danh học viên xuất sắc:</p>
+                            <p class="text-xs">
+                                Giáo viên đưa ra nhận xét chung về tình hình học tập và sự bứt phá kỹ năng của cả lớp sau khi hoàn thành 3 buổi học Bài 7 theo đúng tiến độ lộ trình. 
+                            </p>
+                            <p class="text-xs">
+                                Tuyên dương các nhóm/cá nhân giành chiến thắng ở các trò chơi "Thú cưng đi lạc", "Nhanh tai Nhanh trí" và bảng xếp hạng đấu trường Blooket. Trao các món quà nhỏ hoặc sticker động vật ngộ nghĩnh để tăng độ động viên tinh thần.
+                            </p>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Tổng kết</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<!-- JavaScript xử lý tương tác bộ lọc buổi học mượt mà -->
+<script>
+    function filterSession(session) {
+        // Lấy tất cả các tab nút
+        const tabs = document.querySelectorAll('.session-tab');
+        tabs.forEach(tab => {
+            tab.classList.remove('bg-brand-teal', 'text-white');
+            tab.classList.add('text-slate-600', 'hover:bg-slate-50');
+        });
+
+        // Thiết lập màu sắc nổi bật cho tab đang được chọn
+        const activeBtn = document.getElementById('btn-' + session);
+        if (activeBtn) {
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+            activeBtn.classList.add('bg-brand-teal', 'text-white');
+        }
+
+        // Lấy tất cả các section của các buổi học
+        const sections = document.querySelectorAll('.session-section');
+        sections.forEach(sec => {
+            sec.style.opacity = '0';
+            setTimeout(() => {
+                if (session === 'all') {
+                    sec.style.display = 'block';
+                    sec.style.opacity = '1';
+                } else if (sec.id === 'session-' + session) {
+                    sec.style.display = 'block';
+                    sec.style.opacity = '1';
+                } else {
+                    sec.style.display = 'none';
+                }
+            }, 150);
+        });
+    }
+</script>
+
+</body>
+</html>
